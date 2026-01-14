@@ -1,0 +1,6 @@
+{
+    "conventionalCommits.scopes": [
+        "mcp_document",
+        "chat_host"
+    ]
+}
