@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: chat_host
+  config:
+    import: file:.env[.properties]
+  ai:
+    openai:
+      api-key: ${GROQ_API_KEY}
+      base-url: https://api.groq.com/openai
+
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            mcpdocument:
+              url: http://localhost:8081
+
+server:
+  port: 8080
