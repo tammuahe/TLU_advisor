@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore ONNX model files
+src/main/resources/onnx/
+**/resources/onnx/
+**/venv

@@ -1,0 +1,29 @@
+spring:
+    application:
+        name: mcp_document
+    
+    config:
+        import: file:.env[.properties]
+
+    datasource:
+        url: ${DB_URL}
+        username: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+
+
+    ai:
+        mcp:
+            server:
+                protocol: STREAMABLE
+                name: mcp_document
+                type: sync
+        embedding:
+            transformer:
+                tokenizer:
+                    uri: classpath:onnx/tokenizer.json
+                onnx:
+                    modelUri: classpath:onnx/model.onnx
+                    modelOutputName: "sentence_embedding"
+server:
+  port: 8081
+
