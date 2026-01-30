@@ -3,17 +3,34 @@ spring:
     name: chat_host
   config:
     import: file:.env[.properties]
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/${POSTGRES_CHAT_DB}
+    username: ${POSTGRES_CHAT_USER}
+    password: ${POSTGRES_CHAT_PASSWORD}
+
+  sql:
+    init:
+      mode: always
   ai:
     openai:
       api-key: ${GROQ_API_KEY}
       base-url: https://api.groq.com/openai
+      chat:
+        options:
+          model: openai/gpt-oss-120b
 
-    mcp:
-      client:
-        streamable-http:
-          connections:
-            mcpdocument:
-              url: http://localhost:8081
+#    mcp:
+#      client:
+#        streamable-http:
+#          connections:
+#            mcp_document:
+#              url: http://localhost:8081
+#            mcp_online_info:
+#              url: http://localhost:8082
 
 server:
   port: 8080
+
+jwt:
+  secret : ${JWT_SECRET}
