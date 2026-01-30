@@ -19,7 +19,7 @@ public class Program {
 
     @Id
     @Column(name = "program_id")
-    private String id;
+    private Long id;
 
     private String name;
 

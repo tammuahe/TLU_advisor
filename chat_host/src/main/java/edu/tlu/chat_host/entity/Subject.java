@@ -25,7 +25,7 @@ public class Subject {
 
     @Id
     @Column(name = "subject_id")
-    private String id;
+    private Long id;
 
     private String name;
 

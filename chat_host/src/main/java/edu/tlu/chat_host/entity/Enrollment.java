@@ -27,8 +27,8 @@ public class Enrollment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "course_section_id")
@@ -39,4 +39,5 @@ public class Enrollment {
     private Boolean isPass;
 
     private Boolean isCompulsory;
+
 }
