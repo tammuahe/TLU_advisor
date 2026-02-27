@@ -13,8 +13,11 @@ public class ChatClientConfig {
 
     @Bean
     public ChatClient openAiChatClient(@NonNull OpenAiChatModel openAiChatModel) {
-        return ChatClient.builder(openAiChatModel).defaultSystem("""
-                Generate ONLY a hypothetical university document chunk answering the prompt. The document language is the same as the prompt language.
-                """).build();
+        return ChatClient.builder(openAiChatModel)
+                .defaultSystem(
+                        """
+                                Generate ONLY a short hypothetical university document chunk answering the prompt. The document language is the same as the prompt language.
+                                """)
+                .build();
     }
 }

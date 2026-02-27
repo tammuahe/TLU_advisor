@@ -1,13 +1,14 @@
 package edu.tlu.chat_host.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import edu.tlu.chat_host.enums.ProgramLevel;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "programs")
@@ -18,14 +19,22 @@ import lombok.NoArgsConstructor;
 public class Program {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "program_id")
     private Long id;
 
     private String name;
 
-    private String level;
+    @Enumerated(EnumType.STRING)
+    private ProgramLevel level;
 
-    private String major;
+    @ManyToMany
+    @JoinTable(name = "programs_subjects",
+            joinColumns = @JoinColumn(name = "program_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    private List<Subject> subjects;
 
-    private String trainingMode;
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 }

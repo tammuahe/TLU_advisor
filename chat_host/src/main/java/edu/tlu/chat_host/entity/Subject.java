@@ -1,13 +1,7 @@
 package edu.tlu.chat_host.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import edu.tlu.chat_host.enums.SubjectType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,8 +18,11 @@ import java.util.Set;
 public class Subject {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_id")
     private Long id;
+
+    private String code;
 
     private String name;
 
@@ -38,4 +35,7 @@ public class Subject {
     @ManyToMany
     @JoinTable(name = "subject_prerequisites", joinColumns = @JoinColumn(name = "subject_id"), inverseJoinColumns = @JoinColumn(name = "prerequisite_id"))
     private Set<Subject> prerequisites;
+
+    @Enumerated(EnumType.STRING)
+    private SubjectType type;
 }

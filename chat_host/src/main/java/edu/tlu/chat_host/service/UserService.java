@@ -1,9 +1,17 @@
 package edu.tlu.chat_host.service;
 
+import edu.tlu.chat_host.dto.UserRequest;
+import edu.tlu.chat_host.dto.UserResponse;
 import edu.tlu.chat_host.entity.User;
+import edu.tlu.chat_host.mapper.UserMapper;
+import edu.tlu.chat_host.repository.ProgramRepository;
 import edu.tlu.chat_host.repository.UserRepository;
+import edu.tlu.chat_host.security.CurrentUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,44 +24,26 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CurrentUserService currentUserService;
+    private final PasswordEncoder passwordEncoder;
+    private final ProgramRepository programRepository;
 
-    public User save(@NonNull User user) {
-        return userRepository.save(user);
+    public UserResponse update(@NonNull UserRequest request) throws Exception {
+        User user = userRepository.getReferenceById(currentUserService.getCurrentUserId());
+        if (!(passwordEncoder.encode(request.oldPassword()).equals(user.getPassword()))){
+            throw new BadCredentialsException("Old password is incorrect");
+        }
+        user.setLastName(request.lastName());
+        user.setFirstName(request.firstName());
+        user.setEmail(request.email());
+        if (request.password() != null && !request.password().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(request.password()));}
+        user.setPrograms(programRepository.findAllById(request.programIds()));
+        return UserMapper.toDto(user);
     }
 
-    public Optional<User> findById(@NonNull Long id) {
-        return userRepository.findById(id);
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public void deleteById(@NonNull Long id) {
-        userRepository.deleteById(id);
-    }
-
-    public Optional<User> findByEmail(@NonNull String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    public List<User> findByProgram(@NonNull Long programId) {
-        return userRepository.findByProgramId(programId);
-    }
-
-    public boolean isEmailExists(@NonNull String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    public User update(@NonNull Long id, @NonNull User user) {
-        return userRepository.findById(id)
-                .map(existing -> {
-                    existing.setFirstName(user.getFirstName());
-                    existing.setLastName(user.getLastName());
-                    existing.setEmail(user.getEmail());
-                    existing.setProgram(user.getProgram());
-                    return userRepository.save(existing);
-                })
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    public UserResponse getCurrentUserInfo() {
+        User user = currentUserService.getCurrentUser();
+        return UserMapper.toDto(user);
     }
 }

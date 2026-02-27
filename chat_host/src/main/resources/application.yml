@@ -5,9 +5,14 @@ spring:
     import: file:.env[.properties]
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/${POSTGRES_CHAT_DB}
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_CHAT_DB}
     username: ${POSTGRES_CHAT_USER}
     password: ${POSTGRES_CHAT_PASSWORD}
+
+  jpa:
+    hibernate:
+        ddl-auto: create-drop
+    defer-datasource-initialization: true
 
   sql:
     init:
@@ -20,17 +25,23 @@ spring:
         options:
           model: openai/gpt-oss-120b
 
-#    mcp:
-#      client:
-#        streamable-http:
-#          connections:
-#            mcp_document:
-#              url: http://localhost:8081
-#            mcp_online_info:
-#              url: http://localhost:8082
+
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            mcp_document:
+              url: http://localhost:8081
+        request-timeout: 30s
 
 server:
   port: 8080
 
 jwt:
   secret : ${JWT_SECRET}
+
+logging:
+  level:
+    org:
+      springframework:
+        ai: DEBUG

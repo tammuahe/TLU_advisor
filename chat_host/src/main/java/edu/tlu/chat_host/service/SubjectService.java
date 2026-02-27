@@ -1,8 +1,12 @@
 package edu.tlu.chat_host.service;
 
+import edu.tlu.chat_host.dto.SubjectResponse;
 import edu.tlu.chat_host.entity.Subject;
+import edu.tlu.chat_host.mapper.SubjectMapper;
+import edu.tlu.chat_host.repository.ProgramRepository;
 import edu.tlu.chat_host.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,40 +20,14 @@ import java.util.Optional;
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
+    private final ProgramRepository programRepository;
 
-    public Subject save(@NonNull Subject subject) {
-        return subjectRepository.save(subject);
+    public SubjectResponse findById(@NonNull Long id) {
+        return SubjectMapper.toDto(subjectRepository.findById(id).orElseThrow());
     }
 
-    public Optional<Subject> findById(@NonNull Long id) {
-        return subjectRepository.findById(id);
+    public List<SubjectResponse> findByProgramId(@NonNull Long programId) {
+        return programRepository.findById(programId).orElseThrow().getSubjects().stream().map(SubjectMapper::toDto).toList();
     }
 
-    public List<Subject> findAll() {
-        return subjectRepository.findAll();
-    }
-
-    public void deleteById(@NonNull Long id) {
-        subjectRepository.deleteById(id);
-    }
-
-    public List<Subject> findByFaculty(@NonNull Long facultyId) {
-        return subjectRepository.findByFacultyId(facultyId);
-    }
-
-    public List<Subject> findByCredits(Integer credits) {
-        return subjectRepository.findByCredits(credits);
-    }
-
-    public Subject update(@NonNull Long id, @NonNull Subject subject) {
-        return subjectRepository.findById(id)
-                .map(existing -> {
-                    existing.setName(subject.getName());
-                    existing.setCredits(subject.getCredits());
-                    existing.setFaculty(subject.getFaculty());
-                    existing.setPrerequisites(subject.getPrerequisites());
-                    return subjectRepository.save(existing);
-                })
-                .orElseThrow(() -> new RuntimeException("Subject not found with id: " + id));
-    }
 }

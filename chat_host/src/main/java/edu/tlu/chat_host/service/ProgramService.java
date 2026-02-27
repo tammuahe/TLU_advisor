@@ -1,14 +1,19 @@
 package edu.tlu.chat_host.service;
 
+import edu.tlu.chat_host.dto.ProgramResponse;
 import edu.tlu.chat_host.entity.Program;
+import edu.tlu.chat_host.mapper.ProgramMapper;
 import edu.tlu.chat_host.repository.ProgramRepository;
+import edu.tlu.chat_host.security.CurrentUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -16,40 +21,14 @@ import java.util.Optional;
 public class ProgramService {
 
     private final ProgramRepository programRepository;
+    private final CurrentUserService currentUserService;
 
-    public Program save(@NonNull Program program) {
-        return programRepository.save(program);
+    public List<ProgramResponse> findAll() {
+        return programRepository.findAll().stream().map(ProgramMapper::toDto).toList();
     }
 
-    public Optional<Program> findById(@NonNull Long id) {
-        return programRepository.findById(id);
+    public List<ProgramResponse> findUserProgram(){
+        return currentUserService.getCurrentUser().getPrograms().stream().map(ProgramMapper::toDto).toList();
     }
 
-    public List<Program> findAll() {
-        return programRepository.findAll();
-    }
-
-    public void deleteById(@NonNull Long id) {
-        programRepository.deleteById(id);
-    }
-
-    public List<Program> findByLevel(@NonNull String level) {
-        return programRepository.findByLevel(level);
-    }
-
-    public List<Program> findByMajor(@NonNull String major) {
-        return programRepository.findByMajor(major);
-    }
-
-    public Program update(@NonNull Long id, @NonNull Program program) {
-        return programRepository.findById(id)
-                .map(existing -> {
-                    existing.setName(program.getName());
-                    existing.setLevel(program.getLevel());
-                    existing.setMajor(program.getMajor());
-                    existing.setTrainingMode(program.getTrainingMode());
-                    return programRepository.save(existing);
-                })
-                .orElseThrow(() -> new RuntimeException("Program not found with id: " + id));
-    }
 }

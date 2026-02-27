@@ -1,7 +1,6 @@
 package edu.tlu.chat_host.config;
 
 import edu.tlu.chat_host.repository.UserRepository;
-import edu.tlu.chat_host.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> new CustomUserDetails(userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found")));
+        return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean

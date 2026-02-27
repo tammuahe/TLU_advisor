@@ -1,6 +1,7 @@
 package edu.tlu.chat_host.repository;
 
 import edu.tlu.chat_host.entity.Subject;
+import edu.tlu.chat_host.enums.SubjectType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

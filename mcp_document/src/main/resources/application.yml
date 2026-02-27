@@ -6,9 +6,9 @@ spring:
         import: file:.env[.properties]
 
     datasource:
-        url: ${DB_URL}
-        username: ${POSTGRES_USER}
-        password: ${POSTGRES_PASSWORD}
+        url: jdbc:postgresql://localhost:5433/${POSTGRES_DOC_DB}
+        username: ${POSTGRES_DOC_USER}
+        password: ${POSTGRES_DOC_PASSWORD}
 
 
     ai:
@@ -18,7 +18,9 @@ spring:
             chat:
                 options:
                     model: openai/gpt-oss-120b
-
+        vectorstore:
+          pgvector:
+              dimensions: 2560
         mcp:
             server:
                 protocol: STREAMABLE
@@ -30,7 +32,7 @@ spring:
                     uri: classpath:onnx/tokenizer.json
                 onnx:
                     modelUri: classpath:onnx/model.onnx
-                    modelOutputName: "sentence_embedding"
+                    modelOutputName: "token_embeddings"
 server:
   port: 8081
 

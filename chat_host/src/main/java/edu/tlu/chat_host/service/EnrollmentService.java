@@ -1,10 +1,16 @@
 package edu.tlu.chat_host.service;
 
+import edu.tlu.chat_host.dto.EnrollmentResponse;
 import edu.tlu.chat_host.entity.Enrollment;
+import edu.tlu.chat_host.enums.EnrollmentStatus;
+import edu.tlu.chat_host.mapper.EnrollmentMapper;
 import edu.tlu.chat_host.repository.EnrollmentRepository;
+import edu.tlu.chat_host.security.CurrentUserService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,49 +23,23 @@ import java.util.Optional;
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
+    private final CurrentUserService currentUserService;
 
-    public Enrollment save(@NonNull Enrollment enrollment) {
-        return enrollmentRepository.save(enrollment);
+    public EnrollmentResponse findById(@NonNull Long id) {
+        return EnrollmentMapper.toDto(enrollmentRepository.findById(id).orElseThrow());
     }
 
-    public Optional<Enrollment> findById(@NonNull Long id) {
-        return enrollmentRepository.findById(id);
+    public List<EnrollmentResponse> getCurrentUserEnrollments() {
+        return enrollmentRepository.findByUserId(currentUserService.getCurrentUserId()).stream().map(EnrollmentMapper::toDto).toList();
     }
 
-    public List<Enrollment> findAll() {
-        return enrollmentRepository.findAll();
+    public List<EnrollmentResponse> getEnrollmentsBySubject(Long subjectId) {
+        return enrollmentRepository.findByUser_IdAndCourseSection_Subject_Id(currentUserService.getCurrentUserId(), subjectId).stream().map(EnrollmentMapper::toDto).toList();
     }
 
-    public void deleteById(@NonNull Long id) {
-        enrollmentRepository.deleteById(id);
+    public List<EnrollmentResponse> getEnrollmentByStatus(EnrollmentStatus status) {
+        return enrollmentRepository.findByUserIdAndStatus(currentUserService.getCurrentUserId(), status).stream().map(EnrollmentMapper::toDto).toList();
     }
 
-    public List<Enrollment> getUserEnrollments(@NonNull Long userId) {
-        return enrollmentRepository.findByUserId(userId);
-    }
 
-    public List<Enrollment> getCourseSectionEnrollments(Long courseSectionId) {
-        return enrollmentRepository.findByCourseSectionId(courseSectionId);
-    }
-
-    public List<Enrollment> getPassedCourses(Long userId) {
-        return enrollmentRepository.findByUserIdAndIsPass(userId, true);
-    }
-
-    public List<Enrollment> getFailedCourses(Long userId) {
-        return enrollmentRepository.findByUserIdAndIsPass(userId, false);
-    }
-
-    public Enrollment update(@NonNull Long id, @NonNull Enrollment enrollment) {
-        return enrollmentRepository.findById(id)
-                .map(existing -> {
-                    existing.setUser(enrollment.getUser());
-                    existing.setCourseSection(enrollment.getCourseSection());
-                    existing.setScore10(enrollment.getScore10());
-                    existing.setIsPass(enrollment.getIsPass());
-                    existing.setIsCompulsory(enrollment.getIsCompulsory());
-                    return enrollmentRepository.save(existing);
-                })
-                .orElseThrow(() -> new RuntimeException("Enrollment not found with id: " + id));
-    }
 }

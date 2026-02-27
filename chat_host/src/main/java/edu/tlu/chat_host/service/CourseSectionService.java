@@ -2,7 +2,14 @@ package edu.tlu.chat_host.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import edu.tlu.chat_host.dto.CourseSectionResponse;
+import edu.tlu.chat_host.entity.User;
+import edu.tlu.chat_host.enums.Semester;
+import edu.tlu.chat_host.mapper.CourseSectionMapper;
+import edu.tlu.chat_host.security.CurrentUserService;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,44 +24,35 @@ import lombok.RequiredArgsConstructor;
 public class CourseSectionService {
 
     private final CourseSectionRepository courseSectionRepository;
+    private final CurrentUserService currentUserService;
+    private final SemesterService semesterService;
 
-    public CourseSection save(@NonNull CourseSection courseSection) {
-        return courseSectionRepository.save(courseSection);
+    public CourseSectionResponse save(@NonNull CourseSection courseSection) {
+        return CourseSectionMapper.toDto(courseSectionRepository.save(courseSection));
     }
 
-    public Optional<CourseSection> findById(@NonNull Long id) {
-        return courseSectionRepository.findById(id);
+    public CourseSectionResponse findById(@NonNull Long id) {
+        return CourseSectionMapper.toDto(courseSectionRepository.findById(id).orElseThrow());
     }
 
-    public List<CourseSection> findAll() {
-        return courseSectionRepository.findAll();
+    public List<CourseSectionResponse> findAll() {
+        return courseSectionRepository.findAll().stream().map(CourseSectionMapper::toDto).toList();
     }
 
     public void deleteById(@NonNull Long id) {
         courseSectionRepository.deleteById(id);
     }
 
-    public List<CourseSection> findBySubject(@NonNull Long subjectId) {
-        return courseSectionRepository.findBySubjectId(subjectId);
+    public List<CourseSectionResponse> findBySubjectAndSemester(@NonNull Long subjectId, @NonNull Semester semester) {
+        return courseSectionRepository.findBySubjectId(subjectId).stream().map(CourseSectionMapper::toDto).toList();
     }
 
-
-    public List<CourseSection> findBySemester(@NonNull String semester) {
-        return courseSectionRepository.findBySemester(semester);
+    public List<CourseSectionResponse> findByProfessor(@NonNull Long professorId) {
+        return courseSectionRepository.findByProfessorsId(professorId).stream().map(CourseSectionMapper::toDto).toList();
     }
 
-    public List<CourseSection> findByProfessor(@NonNull Long professorId) {
-        return courseSectionRepository.findByProfessorsId(professorId);
-    }
-
-    public CourseSection update(@NonNull Long id, @NonNull CourseSection courseSection) {
-        return courseSectionRepository.findById(id)
-                .map(existing -> {
-                    existing.setSubject(courseSection.getSubject());
-                    existing.setSemester(courseSection.getSemester());
-                    existing.setProfessors(courseSection.getProfessors());
-                    return courseSectionRepository.save(existing);
-                })
-                .orElseThrow(() -> new RuntimeException("CourseSection not found with id: " + id));
+    public List<CourseSectionResponse> findEligible() {
+        User user = currentUserService.getCurrentUser();
+        return courseSectionRepository.findEligible(user, semesterService.getCurrentSemester(), semesterService.getCurrentYear(), user.getPrograms()).stream().map(CourseSectionMapper::toDto).toList();
     }
 }
