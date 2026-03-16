@@ -17,7 +17,7 @@ spring:
             base-url: https://api.groq.com/openai
             chat:
                 options:
-                    model: openai/gpt-oss-120b
+                    model: llama-3.1-8b-instant
         vectorstore:
           pgvector:
               dimensions: 2560
@@ -35,4 +35,13 @@ spring:
                     modelOutputName: "token_embeddings"
 server:
   port: 8081
+
+logging:
+  level:
+    edu:
+      tlu:
+        mcp_document: DEBUG
+    org:
+      springframework:
+        ai: DEBUG
 

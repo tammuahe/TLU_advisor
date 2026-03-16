@@ -1,5 +1,6 @@
 package edu.tlu.mcp_document.controller;
 
+import edu.tlu.mcp_document.dto.DocumentChunkDto;
 import edu.tlu.mcp_document.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.document.Document;
@@ -18,7 +19,13 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @GetMapping
-    List<Document> getDocument(@RequestParam String prompt) {
+    List<DocumentChunkDto> getDocument(@RequestParam String prompt) {
         return documentService.getDocument(prompt);
     }
+
+    @GetMapping("/handbook")
+    public List<DocumentChunkDto> getHandbook(@RequestParam String prompt) {
+        return documentService.getHandBook(prompt);
+    }
+    
 }

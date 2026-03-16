@@ -42,6 +42,9 @@ jwt:
 
 logging:
   level:
+    edu:
+      tlu:
+        chat_host: DEBUG
     org:
       springframework:
         ai: DEBUG

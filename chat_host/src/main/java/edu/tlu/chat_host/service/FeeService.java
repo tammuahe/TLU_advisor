@@ -1,14 +1,14 @@
 package edu.tlu.chat_host.service;
 
-import edu.tlu.chat_host.dto.RemainingFeeResponse;
-import edu.tlu.chat_host.security.CurrentUserService;
-import lombok.RequiredArgsConstructor;
+import javax.security.auth.login.CredentialNotFoundException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.CredentialNotFoundException;
-import java.io.IOException;
+import edu.tlu.chat_host.dto.RemainingFeeResponse;
+import edu.tlu.chat_host.security.CurrentUserService;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class FeeService {
         if (name.isBlank()) {
             throw new IllegalArgumentException("Student " + studentId + " not found. Try updating user profile or logging in again. If the problem persists, contact \"Phòng tiếp sinh viên\".");
         }
-        Double amount = Double.valueOf(document.select("#totalAmount").text());
+        String amount = document.select("#totalAmount").text();
         System.out.println("amount: " + amount + "\n student ID: " + studentId);
         return new RemainingFeeResponse(studentId, name, amount);
     }

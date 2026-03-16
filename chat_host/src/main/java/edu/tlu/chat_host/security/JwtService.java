@@ -16,7 +16,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class JwtService {
@@ -48,12 +50,14 @@ public class JwtService {
     public String generateToken(
             Map<String, Object> extraClaim,
             UserDetails userDetails) {
+        Date expiry = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24);
+        log.debug("Generating JWT for subject={}, expiry={}", userDetails.getUsername(), expiry);
         return Jwts
                 .builder()
                 .claims(extraClaim)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .expiration(expiry)
                 .signWith(getSignInKey())
                 .compact();
     }
@@ -72,6 +76,8 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (!isTokenExpired(token) && username.equals(userDetails.getUsername()));
+        boolean valid = !isTokenExpired(token) && username.equals(userDetails.getUsername());
+        log.debug("Token validation for username={}: valid={}", username, valid);
+        return valid;
     }
 }
