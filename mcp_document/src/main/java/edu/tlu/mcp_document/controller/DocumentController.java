@@ -23,9 +23,9 @@ public class DocumentController {
         return documentService.getDocument(prompt);
     }
 
-    @GetMapping("/handbook")
-    public List<DocumentChunkDto> getHandbook(@RequestParam String prompt) {
-        return documentService.getHandBook(prompt);
-    }
+    // @GetMapping("/handbook")
+    // public List<DocumentChunkDto> getHandbook(@RequestParam String prompt) {
+    //     return documentService.getHandBook(prompt);
+    // }
     
 }

@@ -1,11 +1,7 @@
 package edu.tlu.chat_host.config;
 
 import edu.tlu.chat_host.service.ToolService;
-import lombok.Locked.Read;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
-
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -16,6 +12,8 @@ import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
+
+import java.time.LocalDateTime;
 
 @Configuration
 @RequiredArgsConstructor
@@ -80,9 +78,8 @@ public class ChatClientConfig {
                 Extract the year from the chunk date.
                 If the year is earlier than 
                 """
-
-                + String.valueOf(LocalDateTime.now().getYear() - 1) + """
-                                                                                                                                                        "Lưu ý: Thông tin này được trích từ tài liệu năm {year} và có thể đã lỗi thời."
+                + (LocalDateTime.now().getYear() - 1) + """
+                                                                                                                                                        "Lưu ý: Thông tin này được trích từ tài liệu năm {year} và có thFể đã lỗi thời."
                                                 SOURCE RULE
                 
                 If getDocument is used:
