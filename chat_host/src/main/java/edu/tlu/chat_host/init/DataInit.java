@@ -31,11 +31,5 @@ public class DataInit {
                                                 .programs(programRepository
                                                                 .findByNameContainingIgnoreCase("công nghệ thông tin"))
                                                 .roles(Set.of(Role.USER)).build());
-                userRepository.save(
-                                User.builder().code("A44645").firstName("Anh").lastName("Cung Việt")
-                                                .email("nigga@gmail.com").passwordHash(passwordEncoder.encode("test"))
-                                                .programs(programRepository
-                                                                .findByNameContainingIgnoreCase("công nghệ thông tin"))
-                                                .roles(Set.of(Role.USER)).build());
         }
 }

@@ -7,3 +7,6 @@
 /mcp_document/vector_store.dump
 mcp_document/maven_output.txt
 **/application.yml
+/.superpowers
+/docs
+**/*.md

@@ -62,17 +62,6 @@ public class DocumentReranker {
     public List<Document> rerankAndExpand(List<Document> documents) {
         return rerank(documents, true);
     }
-
-    /**
-     * Reranks all documents, limits to {@code totalLimit}, then expands only the
-     * top
-     * {@code expandTop} chunks. The remaining slots are returned without expansion.
-     *
-     * @param documents  candidates from vector search
-     * @param totalLimit total number of chunks to return
-     * @param expandTop  how many top-ranked chunks to expand (must be <=
-     *                   totalLimit)
-     */
     public List<Document> rerankAndExpandTop(List<Document> documents, int totalLimit, int expandTop) {
         if (documents == null || documents.isEmpty())
             return documents;
@@ -89,10 +78,6 @@ public class DocumentReranker {
         }
         return result;
     }
-
-    // -------------------------------------------------------------------------
-    // Rerank
-    // -------------------------------------------------------------------------
 
     private List<Document> rerank(List<Document> documents, boolean expand) {
         if (documents == null || documents.isEmpty())
@@ -126,10 +111,6 @@ public class DocumentReranker {
                 .collect(Collectors.toList());
     }
 
-    // -------------------------------------------------------------------------
-    // Scoring
-    // -------------------------------------------------------------------------
-
     private double computeCompositeScore(Document doc, double maxSimilarity,
             long minEpoch, long epochRange) {
         double similarityScore = (doc.getScore() != null && maxSimilarity > 0)
@@ -156,10 +137,6 @@ public class DocumentReranker {
         return source instanceof String s
                 && s.trim().toLowerCase().contains(PRIORITY_SOURCE.toLowerCase());
     }
-
-    // -------------------------------------------------------------------------
-    // Chunk expansion
-    // -------------------------------------------------------------------------
 
     private Document expandChunk(Document doc) {
         Map<String, Object> meta = doc.getMetadata();
@@ -229,10 +206,6 @@ public class DocumentReranker {
             throw new SQLException("Failed to parse metadata JSON for row " + rowNum, e);
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Date helpers
-    // -------------------------------------------------------------------------
 
     private long parseEpoch(Document doc) {
         Object val = doc.getMetadata().get("date");

@@ -24,7 +24,7 @@ spring:
                     model: llama-3.1-8b-instant
         vectorstore:
             pgvector:
-                table-name: b3
+                table-name: vector_store
                 dimensions: 2560
         mcp:
             server:

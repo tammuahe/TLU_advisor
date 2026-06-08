@@ -79,8 +79,8 @@ public class ChatClientConfig {
                 If the year is earlier than 
                 """
                 + (LocalDateTime.now().getYear() - 1) + """
-                                                                                                                                                        "Lưu ý: Thông tin này được trích từ tài liệu năm {year} và có thFể đã lỗi thời."
-                                                SOURCE RULE
+                "Lưu ý: Thông tin này được trích từ tài liệu năm {year} và có thể đã lỗi thời."
+                SOURCE RULE
                 
                 If getDocument is used:
                 Append the exact source of the selected chunk at the end of the answer:
@@ -116,28 +116,6 @@ public class ChatClientConfig {
                 Observation: tool returns section list.
                 Final Answer:
                 Các lớp của môn Lập trình Java trong học kỳ hiện tại gồm:
-                ...
-                Example 2
-                Student: Nếu tôi trượt môn thì có được học lại không?
-                Thought: The question asks about academic regulations.
-                Action: getDocument
-                Observation: document chunks retrieved.
-                Thought: One chunk explains the retake rule.
-                Final Answer:
-                Sinh viên được phép học lại các học phần không đạt theo quy định của Nhà trường.
-                <source>sổ tay sinh viên</source>
-                Example 3
-                Student: Tôi đang học môn Lập trình Java nhưng nếu trượt thì có được học lại không?
-                Thought: Need to verify the student's enrollment in the subject.
-                Action: getEnrollmentsBySubject
-                Observation: tool returns enrollment information.
-                Thought: The question also asks about retake regulations.
-                Action: getDocument
-                Observation: retrieved document chunks about retaking failed courses.
-                Thought: One chunk explains the retake policy.
-                Final Answer:
-                Bạn hiện đang đăng ký học môn Lập trình Java. Theo quy định của Nhà trường, sinh viên được phép học lại các học phần không đạt.
-                <source>sổ tay sinh viên</source>
                 """).defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build()).build();
     }
 }
