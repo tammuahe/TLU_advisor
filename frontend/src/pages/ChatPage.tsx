@@ -1,15 +1,21 @@
 import { useState, useRef, useEffect } from "react"
 import { useAuth } from "@/context/useAuth"
 import { apiClient } from "@/lib/api"
+import { parseMessageSources } from "@/lib/markdown"
 import type { ChatMessage } from "@/types/api"
 import { Button } from "@/components/ui/button"
 import ChatBubble from "@/components/ChatBubble"
+import SourcePanel from "@/components/SourcePanel"
 import MessageInput from "@/components/MessageInput"
 import { LogOut } from "lucide-react"
 
+interface DisplayMessage extends ChatMessage {
+  sources?: string[]
+}
+
 export default function ChatPage() {
   const { logout } = useAuth()
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [messages, setMessages] = useState<DisplayMessage[]>([])
   const [sending, setSending] = useState(false)
   const [error, setError] = useState("")
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -22,7 +28,7 @@ export default function ChatPage() {
   }, [messages])
 
   async function handleSend(prompt: string) {
-    const userMessage: ChatMessage = { role: "user", content: prompt }
+    const userMessage: DisplayMessage = { role: "user", content: prompt }
     setMessages((prev) => [...prev, userMessage])
     setSending(true)
     setError("")
@@ -31,7 +37,8 @@ export default function ChatPage() {
       const response = await apiClient<ChatMessage>(
         `/chat?prompt=${encodeURIComponent(prompt)}`
       )
-      setMessages((prev) => [...prev, response])
+      const parsed = parseMessageSources(response.content)
+      setMessages((prev) => [...prev, { ...response, content: parsed.content, sources: parsed.sources }])
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Gửi tin nhắn thất bại"
@@ -59,7 +66,12 @@ export default function ChatPage() {
           </p>
         )}
         {messages.map((msg, i) => (
-          <ChatBubble key={i} message={msg} />
+          <div key={i}>
+            <ChatBubble message={msg} />
+            {msg.sources && msg.sources.length > 0 && (
+              <SourcePanel sources={msg.sources} />
+            )}
+          </div>
         ))}
         {sending && (
           <div className="flex justify-start">
