@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { createContext, useContext, useState, type ReactNode } from 'react'
 
 interface AuthState {
   user: { email: string } | null
@@ -13,22 +13,21 @@ interface AuthContextType extends AuthState {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AuthState>({ user: null, token: null, loading: true })
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('auth')
-      if (stored) {
-        const { email, token } = JSON.parse(stored)
-        setState({ user: { email }, token, loading: false })
-        return
-      }
-    } catch {
-      /* corrupted data — treat as unauthenticated */
+function loadInitialState(): AuthState {
+  try {
+    const stored = localStorage.getItem('auth')
+    if (stored) {
+      const { email, token } = JSON.parse(stored)
+      return { user: { email }, token, loading: false }
     }
-    setState({ user: null, token: null, loading: false })
-  }, [])
+  } catch {
+    /* corrupted data — treat as unauthenticated */
+  }
+  return { user: null, token: null, loading: false }
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<AuthState>(loadInitialState)
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
@@ -54,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem('auth')
-    setState({ user: null, token: null })
+    setState({ user: null, token: null, loading: false })
   }
 
   return (
@@ -64,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used within AuthProvider')
