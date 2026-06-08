@@ -6,9 +6,13 @@ spring:
         import: file:.env[.properties]
 
     datasource:
-        url: jdbc:postgresql://localhost:5433/${POSTGRES_DOC_DB}
+        url: jdbc:postgresql://localhost:5432/${POSTGRES_DOC_DB}
         username: ${POSTGRES_DOC_USER}
         password: ${POSTGRES_DOC_PASSWORD}
+        
+    threads:
+        virtual:
+            enabled: true
 
 
     ai:
@@ -19,8 +23,9 @@ spring:
                 options:
                     model: llama-3.1-8b-instant
         vectorstore:
-          pgvector:
-              dimensions: 2560
+            pgvector:
+                table-name: b3
+                dimensions: 2560
         mcp:
             server:
                 protocol: STREAMABLE
@@ -31,6 +36,7 @@ spring:
                 tokenizer:
                     uri: classpath:onnx/tokenizer.json
                 onnx:
+                    gpuDeviceId: 0
                     modelUri: classpath:onnx/model.onnx
                     modelOutputName: "token_embeddings"
 server:

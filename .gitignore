@@ -5,3 +5,5 @@
 /mcp_document/model.onnx_data
 /PROJECT_OVERVIEW.md
 /mcp_document/vector_store.dump
+mcp_document/maven_output.txt
+**/application.yml

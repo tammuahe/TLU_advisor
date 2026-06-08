@@ -7,9 +7,9 @@ services:
       POSTGRES_PASSWORD: yourpassword
       POSTGRES_DB: yourdatabase
     ports:
-      - "5432:5432" # Maps the container's port 5432 to the host's port 5432
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data # Persists data to a named volume on the host
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  pgdata: # Defines the named volume
+  pgdata:
