@@ -10,8 +10,8 @@ export default function SourcePanel({ sources }: Props) {
   return (
     <div className="flex justify-start">
       <div className="max-w-[75%] w-full">
-        <div className="mt-2 rounded-lg border-l-2 border-primary bg-card px-4 py-3 shadow-sm">
-          <p className="text-xs font-medium text-muted-foreground mb-2">
+        <div className="mt-1.5 rounded-lg border-l-2 border-primary bg-card px-4 py-2.5 shadow-sm">
+          <p className="text-xs font-medium text-muted-foreground mb-1.5">
             Nguồn tham khảo
           </p>
           <ul className="space-y-1">

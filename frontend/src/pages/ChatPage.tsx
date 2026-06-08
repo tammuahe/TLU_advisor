@@ -50,7 +50,7 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      <header className="shrink-0 border-b px-6 py-4 flex items-center justify-between">
+      <header className="shrink-0 border-b px-4 py-3 flex items-center justify-between">
         <h1 className="font-['Noto_Serif'] text-xl font-semibold">
           TLU Advisor
         </h1>
@@ -59,9 +59,9 @@ export default function ChatPage() {
         </Button>
       </header>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
         {messages.length === 0 && (
-          <p className="text-center text-muted-foreground mt-20">
+          <p className="text-center text-muted-foreground mt-16">
             Hãy đặt câu hỏi để bắt đầu
           </p>
         )}
@@ -91,7 +91,7 @@ export default function ChatPage() {
         )}
       </div>
 
-      <div className="shrink-0 border-t p-4">
+      <div className="shrink-0 border-t px-4 py-3">
         <MessageInput onSend={handleSend} disabled={sending} />
       </div>
     </div>

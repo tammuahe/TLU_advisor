@@ -45,7 +45,7 @@ export default function LoginPage() {
           <CardDescription>Trợ lý học tập AI</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 mt-2">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
