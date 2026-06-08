@@ -14,7 +14,7 @@ export default function ChatBubble({ message }: Props) {
         className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
           isUser
             ? "bg-primary text-primary-foreground rounded-br-md"
-            : "bg-muted text-foreground rounded-bl-md prose prose-sm dark:prose-invert"
+            : "bg-muted text-foreground rounded-bl-md prose prose-sm"
         }`}
       >
         {isUser ? (
