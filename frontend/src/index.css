@@ -1,20 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #08090d;
-  --color-surface: #111318;
-  --color-card: rgba(255, 255, 255, 0.03);
-  --color-accent: #00f0a8;
-  --color-accent-dim: rgba(0, 240, 168, 0.25);
-  --color-text: #eaeaef;
-  --color-muted: #6b6e7b;
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-input-bg: rgba(255, 255, 255, 0.04);
-  --color-error: #ff4971;
-  --font-heading: "Rajdhani", sans-serif;
-  --font-body: "DM Sans", sans-serif;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -23,22 +8,18 @@
 
 html, body, #root {
   height: 100%;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-body);
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
 }
 
 @keyframes fadeIn {
@@ -46,17 +27,7 @@ html, body, #root {
   to { opacity: 1; }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 4px var(--color-accent-dim); }
-  50% { box-shadow: 0 0 18px var(--color-accent-dim); }
-}
-
 @keyframes messageIn {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }

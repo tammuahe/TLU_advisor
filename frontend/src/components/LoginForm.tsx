@@ -33,38 +33,22 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-bg">
-      {/* Subtle grid overlay */}
-      <div
-        className="pointer-events-none fixed inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-        }}
-      />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-4">
+      {/* Decorative top accent bar */}
+      <div className="fixed inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600" />
 
-      {/* Animated ambient glow */}
-      <div className="pointer-events-none fixed left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent opacity-[0.03] blur-[120px]" />
-
-      <div className="animate-[slideUp_0.6s_ease-out] z-10 w-full max-w-sm">
-        {/* Title */}
-        <h1
-          className="font-heading text-center text-4xl font-bold tracking-wider"
-          style={{
-            textShadow: '0 0 40px var(--color-accent-dim)',
-          }}
-        >
-          TLU
-          <span className="text-accent"> ADVISOR</span>
+      <div className="w-full animate-[slideUp_0.6s_ease-out]" style={{ maxWidth: 400 }}>
+        <h1 className="text-center text-3xl font-bold tracking-tight text-white">
+          TLU Advisor
         </h1>
-        <p className="mt-2 text-center font-body text-sm text-muted">University Knowledge Assistant</p>
+        <p className="mt-2 text-center text-sm text-slate-400">
+          University Knowledge Assistant
+        </p>
 
-        {/* Card */}
-        <div className="mt-10 rounded-2xl border border-border bg-surface/50 p-8 backdrop-blur-xl">
+        <div className="mt-8 rounded-xl border border-slate-800 bg-slate-900 p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="font-body text-xs font-medium uppercase tracking-widest text-muted">
+              <label className="block text-xs font-medium uppercase tracking-wider text-slate-500">
                 Email
               </label>
               <input
@@ -74,14 +58,14 @@ export default function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className={`mt-1.5 w-full border-b-2 bg-transparent py-2.5 font-body text-sm text-text outline-none transition-all placeholder:text-muted/40 focus:border-accent disabled:opacity-50 ${
-                  error ? 'border-error' : 'border-border'
-                } ${error ? 'animate-[shake_0.35s_ease-in-out]' : ''}`}
+                className={`mt-1.5 w-full rounded-lg border bg-slate-950 px-4 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 disabled:opacity-50 ${
+                  error ? 'border-red-500 animate-[shake_0.3s_ease-in-out]' : 'border-slate-800'
+                }`}
               />
             </div>
 
             <div>
-              <label className="font-body text-xs font-medium uppercase tracking-widest text-muted">
+              <label className="block text-xs font-medium uppercase tracking-wider text-slate-500">
                 Password
               </label>
               <input
@@ -91,14 +75,14 @@ export default function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
-                className={`mt-1.5 w-full border-b-2 bg-transparent py-2.5 font-body text-sm text-text outline-none transition-all placeholder:text-muted/40 focus:border-accent disabled:opacity-50 ${
-                  error ? 'border-error' : 'border-border'
-                } ${error ? 'animate-[shake_0.35s_ease-in-out]' : ''}`}
+                className={`mt-1.5 w-full rounded-lg border bg-slate-950 px-4 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 disabled:opacity-50 ${
+                  error ? 'border-red-500 animate-[shake_0.3s_ease-in-out]' : 'border-slate-800'
+                }`}
               />
             </div>
 
             {error && (
-              <p role="alert" className="animate-[fadeIn_0.2s_ease-out] font-body text-sm text-error">
+              <p role="alert" className="animate-[fadeIn_0.2s_ease-out] text-sm text-red-400">
                 {error}
               </p>
             )}
@@ -106,21 +90,21 @@ export default function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 w-full rounded-xl border border-accent/30 bg-accent/10 py-3 font-heading text-sm font-semibold uppercase tracking-widest text-accent transition-all hover:border-accent/60 hover:bg-accent/15 hover:shadow-[0_0_30px_var(--color-accent-dim)] disabled:opacity-40"
+              className="w-full rounded-lg bg-amber-500 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400 disabled:opacity-50"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-accent/50 border-t-accent" />
-                  Authenticating
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-800 border-t-transparent" />
+                  Signing in...
                 </span>
               ) : (
-                'Enter'
+                'Sign in'
               )}
             </button>
           </form>
         </div>
 
-        <p className="mt-6 text-center font-body text-xs text-muted/50">
+        <p className="mt-6 text-center text-xs text-slate-600">
           Secured by TLU Identity Service
         </p>
       </div>
