@@ -1,7 +1,7 @@
 import { useState, useEffect, type ReactNode } from "react"
 import { setUnauthorizedHandler, apiClient } from "@/lib/api"
 import { AuthContext } from "@/context/useAuth"
-import type { AuthResponse, RegisterRequest } from "@/types/api"
+import type { AuthResponse } from "@/types/api"
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(
@@ -24,15 +24,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(token)
   }
 
-  async function register(data: RegisterRequest) {
-    const { token } = await apiClient<AuthResponse>("/auth/register", {
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-    localStorage.setItem("token", token)
-    setToken(token)
-  }
-
   function logout() {
     localStorage.removeItem("token")
     setToken(null)
@@ -43,7 +34,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         token,
         login,
-        register,
         logout,
         isAuthenticated: token !== null,
       }}

@@ -35,11 +35,11 @@ export async function apiClient<T>(
 
   if (response.status === 401) {
     onUnauthorized?.()
-    throw new Error("Session expired. Please log in again.")
+    throw new Error("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.")
   }
 
   if (!response.ok) {
-    let message = "Request failed"
+    let message = "Yêu cầu thất bại"
     try {
       const error = await response.json()
       if (error.message) message = error.message

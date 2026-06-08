@@ -31,7 +31,7 @@ export default function MessageInput({ onSend, disabled }: Props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Type your message..."
+        placeholder="Nhập tin nhắn..."
         disabled={disabled}
         className="flex-1"
       />

@@ -34,7 +34,7 @@ export default function ChatPage() {
       setMessages((prev) => [...prev, response])
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to send message"
+        err instanceof Error ? err.message : "Gửi tin nhắn thất bại"
       )
     } finally {
       setSending(false)
@@ -47,7 +47,7 @@ export default function ChatPage() {
         <h1 className="font-['Noto_Serif'] text-xl font-semibold">
           TLU Advisor
         </h1>
-        <Button variant="ghost" size="icon" onClick={logout} title="Logout">
+        <Button variant="ghost" size="icon" onClick={logout} title="Đăng xuất">
           <LogOut className="h-5 w-5" />
         </Button>
       </header>
@@ -55,7 +55,7 @@ export default function ChatPage() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
           <p className="text-center text-muted-foreground mt-20">
-            Ask a question to get started
+            Hãy đặt câu hỏi để bắt đầu
           </p>
         )}
         {messages.map((msg, i) => (
